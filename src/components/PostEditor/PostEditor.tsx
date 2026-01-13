@@ -33,25 +33,26 @@ interface PostEditorProps {
 // Styled Components
 const EditorContainer = styled(Box)({
   backgroundColor: '#fff',
-  borderRadius: '12px',
-  border: '1px solid #e0e0e0',
+  borderRadius: '24px',
   padding: '16px',
+  paddingBottom: '0',
   marginBottom: '24px',
+  border: '6px solid #F2F0EF',
 });
 
 const ToolbarContainer = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  paddingBottom: '12px',
-  borderBottom: '1px solid #e0e0e0',
-  marginBottom: '12px',
+  marginBottom: '8px',
 });
 
 const ToolbarLeft = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   gap: '4px',
+  backgroundColor: '#F2F0EF',
+  borderRadius: '8px',
 });
 
 const ToolbarButton = styled(IconButton)({
@@ -92,6 +93,7 @@ const EditorFooter = styled(Box)({
   alignItems: 'center',
   justifyContent: 'space-between',
   marginTop: '12px',
+  borderTop: '1px solid #e0e0e0',
 });
 
 const FooterActions = styled(Box)({

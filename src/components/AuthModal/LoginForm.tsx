@@ -26,7 +26,7 @@ const FormWrapper = styled(Box)({
 const CloseButton = styled(IconButton)({
   position: 'absolute',
   top: '-16px',
-  right: '-16px',
+  right: '-33px',
   color: '#666',
   padding: '4px',
   '&:hover': {

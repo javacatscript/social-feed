@@ -53,7 +53,7 @@ const CardFace = styled(Box)({
   backgroundColor: '#fff',
   borderRadius: '16px',
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
-  padding: '24px',
+  padding: '24px 40px',
 });
 
 const CardFront = styled(CardFace)({
