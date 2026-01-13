@@ -1,6 +1,9 @@
 'use client';
 
+// MUI
 import { Box, Card, CardContent, Typography, styled } from '@mui/material';
+
+// Icons
 import { Login as LoginIcon } from '@mui/icons-material';
 
 interface AuthCardProps {
@@ -9,6 +12,7 @@ interface AuthCardProps {
   children: React.ReactNode;
 }
 
+// Styled Components
 const PageContainer = styled(Box)({
   minHeight: '100vh',
   display: 'flex',
@@ -26,7 +30,7 @@ const AuthCardContainer = styled(Card)({
 });
 
 const CardInnerContent = styled(CardContent)({
-  padding: '48px 32px',
+  padding: '24px',
 });
 
 const IconContainer = styled(Box)({
@@ -52,7 +56,7 @@ const StyledLoginIcon = styled(LoginIcon)({
 const PageTitle = styled(Typography)({
   fontWeight: 600,
   marginBottom: '8px',
-  fontSize: '24px',
+  fontSize: '20px',
   color: '#000',
   textAlign: 'center',
 });

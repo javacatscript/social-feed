@@ -1,10 +1,16 @@
 'use client';
 
+// React/nextjs
 import { useState } from 'react';
-import { Box, TextField, Button, Typography, Link as MuiLink, styled } from '@mui/material';
 import Link from 'next/link';
+
+// MUI
+import { Box, TextField, Button, Typography, Link as MuiLink, styled } from '@mui/material';
+
+// Components
 import AuthCard from '@/components/AuthCard/AuthCard';
 
+// Styled Components
 const FormContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
