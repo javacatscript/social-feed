@@ -122,7 +122,7 @@ const EditorFooter = styled(Box)({
 const FooterActions = styled(Box)({
   display: 'flex',
   alignItems: 'center',
-  gap: '8px',
+  gap: '2px',
 });
 
 const PublishButton = styled(Button)({

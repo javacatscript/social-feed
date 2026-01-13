@@ -100,13 +100,17 @@ const PostActions = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   gap: '4px',
+  padding: "4px 0",
   borderTop: "1px solid #e0e0e0"
 });
 
 const ActionButton = styled(IconButton)({
-  padding: '8px',
+  padding: '6px',
   color: '#666',
   transition: 'all 0.2s ease',
+  '& .MuiSvgIcon-root': {
+    fontSize: '18px',
+  },
   '&:hover': {
     backgroundColor: '#f5f5f5',
     color: '#5E5FE1',
