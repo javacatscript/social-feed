@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 
 // MUI
-import { Modal, Box, styled } from '@mui/material';
+import { Modal, Box, Backdrop, styled } from '@mui/material';
 
 // Components
 import LoginForm from './LoginForm';
@@ -17,8 +17,8 @@ interface AuthModalProps {
 }
 
 // Styled Components
-const BackdropOverlay = styled(Box)({
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+const BackdropOverlay = styled(Backdrop)({
+  backgroundColor: 'rgba(0, 0, 0, 0.65)',
 });
 
 const ModalContainer = styled(Box)({

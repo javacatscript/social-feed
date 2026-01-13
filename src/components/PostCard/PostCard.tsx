@@ -42,7 +42,7 @@ const CardContainer = styled(Box)({
   borderRadius: '12px',
   border: '1px solid #e0e0e0',
   padding: '16px',
-  paddingBottom: '12px',
+  paddingBottom: '2px',
   marginBottom: '16px',
 });
 
@@ -81,7 +81,7 @@ const PostTime = styled(Typography)({
 const PostContent = styled(Box)({
   display: 'flex',
   gap: '8px',
-  marginBottom: '16px',
+  marginBottom: '24px',
 });
 
 const PostEmoji = styled('span')({
@@ -92,14 +92,15 @@ const PostEmoji = styled('span')({
 const PostText = styled(Typography)({
   fontSize: '14px',
   color: '#333',
-  lineHeight: '1.6',
+  lineHeight: '1.5',
   wordBreak: 'break-word',
 });
 
 const PostActions = styled(Box)({
   display: 'flex',
   alignItems: 'center',
-  gap: '8px',
+  gap: '4px',
+  borderTop: "1px solid #e0e0e0"
 });
 
 const ActionButton = styled(IconButton)({
