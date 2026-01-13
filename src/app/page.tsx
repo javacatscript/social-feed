@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // MUI
 import { Box, Container, styled } from '@mui/material';
@@ -72,16 +72,29 @@ export default function FeedPage() {
   const [posts, setPosts] = useState<Post[]>(DUMMY_POSTS);
   const [postContent, setPostContent] = useState('');
 
+  // check authentication state on mount
+  useEffect(() => {
+    const authState = localStorage.getItem('isAuthenticated');
+    if (authState === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const handleAuthClick = () => {
     if (isAuthenticated) {
+      // if user is authenticated, logout
       setIsAuthenticated(false);
+      localStorage.removeItem('isAuthenticated');
     } else {
+      // otherwise, show the login modal
       setShowAuthModal(true);
     }
   };
 
   const handleAuthenticate = () => {
     setIsAuthenticated(true);
+    // Store authentication state in localStorage
+    localStorage.setItem('isAuthenticated', 'true');
   };
 
   const handleAuthRequired = () => {

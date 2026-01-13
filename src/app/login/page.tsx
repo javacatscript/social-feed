@@ -155,10 +155,13 @@ export default function LoginPage() {
     );
 
     if (validUser) {
-      // Redirect to homepage on successful login
+      // store authentication state in localStorage
+      localStorage.setItem('isAuthenticated', 'true');
+      
+      // and redirect to homepage on successful login
       router.push('/');
     } else {
-      // Check if email exists but password is wrong
+      // check if email exists but password is wrong
       const emailExists = VALID_CREDENTIALS.find(
         (cred) => cred.email === email.toLowerCase().trim()
       );

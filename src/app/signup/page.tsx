@@ -141,38 +141,41 @@ export default function SignUpPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Check if fields are empty
+    // check if fields are empty
     if (!email || !password || !repeatPassword) {
       alert('Please fill in all fields');
       return;
     }
 
-    // Validate email format
+    // validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert('Please enter a valid email address');
       return;
     }
 
-    // Check if email already exists
+    // check if email already exists
     if (VALID_EMAILS.includes(email.toLowerCase().trim())) {
       alert('This email is already registered. Please sign in or use a different email.');
       return;
     }
 
-    // Check if passwords match
+    // check if passwords match
     if (password !== repeatPassword) {
       alert('Passwords do not match');
       return;
     }
 
-    // Check password length
+    // check password length
     if (password.length < 8) {
       alert('Password must be at least 8 characters long');
       return;
     }
 
-    // All validations passed - redirect to homepage on successful signup
+    // all validations passed - store authentication state in localStorage
+    localStorage.setItem('isAuthenticated', 'true');
+
+    // and redirect to homepage
     router.push('/');
   };
 
