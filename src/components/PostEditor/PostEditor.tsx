@@ -55,6 +55,14 @@ const ToolbarLeft = styled(Box)({
   borderRadius: '8px',
 });
 
+const ToolbarDivider = styled('span')({
+  width: '1px',
+  height: '24px',
+  backgroundColor: '#D6D3D1',
+  margin: '0 4px',
+  display: 'inline-block',
+});
+
 const ToolbarButton = styled(IconButton)({
   padding: '8px',
   color: '#666',
@@ -149,12 +157,14 @@ export default function PostEditor({ value, onChange, onPublish, onAuthRequired,
           <ToolbarButton size="small" onClick={handleNotImplemented}>
             <FormatUnderlined fontSize="small" />
           </ToolbarButton>
+            <ToolbarDivider aria-hidden="true" />
           <ToolbarButton size="small" onClick={handleNotImplemented}>
             <FormatListBulleted fontSize="small" />
           </ToolbarButton>
           <ToolbarButton size="small" onClick={handleNotImplemented}>
             <FormatListNumbered fontSize="small" />
           </ToolbarButton>
+            <ToolbarDivider aria-hidden="true" />
           <ToolbarButton size="small" onClick={handleNotImplemented}>
             <Code fontSize="small" />
           </ToolbarButton>
