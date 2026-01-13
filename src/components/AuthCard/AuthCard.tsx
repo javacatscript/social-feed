@@ -23,7 +23,7 @@ const PageContainer = styled(Box)({
 });
 
 const AuthCardContainer = styled(Card)({
-  maxWidth: 460,
+  maxWidth: 420,
   width: '100%',
   borderRadius: '24px',
   boxShadow: '0 4px 20px rgba(0,0,0,0.08)',

@@ -62,6 +62,7 @@ const SubmitButton = styled(Button)({
   padding: '14px',
   borderRadius: '8px',
   marginTop: '8px',
+  lineHeight: 1,
   '&:hover': {
     backgroundColor: '#4a4bc7',
   },
