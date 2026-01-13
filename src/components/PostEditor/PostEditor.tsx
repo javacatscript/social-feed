@@ -37,21 +37,6 @@ const shake = keyframes`
   75% { transform: translateX(4px); }
 `;
 
-const publishSuccess = keyframes`
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-`;
-
-const ripple = keyframes`
-  0% {
-    box-shadow: 0 0 0 0 rgba(94, 95, 225, 0.4);
-  }
-  100% {
-    box-shadow: 0 0 0 10px rgba(94, 95, 225, 0);
-  }
-`;
-
 // Styled Components
 const EditorContainer = styled(Box)({
   backgroundColor: '#fff',
@@ -157,14 +142,10 @@ const PublishButton = styled(Button)({
   '&.Mui-disabled': {
     backgroundColor: 'transparent',
   },
-  '&.animate-publish': {
-    animation: `${publishSuccess} 0.4s ease-out, ${ripple} 0.6s ease-out`,
-  },
 });
 
 export default function PostEditor({ value, onChange, onPublish, onAuthRequired, isAuthenticated }: PostEditorProps) {
   const [shakingButton, setShakingButton] = useState<string | null>(null);
-  const [isPublishing, setIsPublishing] = useState(false);
 
   const handleNotImplemented = (buttonId: string) => {
     setShakingButton(buttonId);
@@ -218,12 +199,8 @@ export default function PostEditor({ value, onChange, onPublish, onAuthRequired,
       return;
     }
     if (value.trim()) {
-      setIsPublishing(true);
-      setTimeout(() => {
-        onPublish(value);
-        onChange('');
-        setIsPublishing(false);
-      }, 400);
+      onPublish(value);
+      onChange('');
     }
   };
 
@@ -329,7 +306,6 @@ export default function PostEditor({ value, onChange, onPublish, onAuthRequired,
           variant="contained"
           onClick={handlePublish}
           disabled={!value.trim()}
-          className={isPublishing ? 'animate-publish' : ''}
         >
           <Send />
         </PublishButton>
