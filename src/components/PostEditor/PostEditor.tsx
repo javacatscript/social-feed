@@ -148,6 +148,13 @@ export default function PostEditor({ value, onChange, onPublish, onAuthRequired,
   const [shakingButton, setShakingButton] = useState<string | null>(null);
 
   const handleNotImplemented = (buttonId: string) => {
+    // If not authenticated, show login modal
+    if (!isAuthenticated) {
+      onAuthRequired();
+      return;
+    }
+
+    // If authenticated, show coming soon notification
     setShakingButton(buttonId);
     setTimeout(() => setShakingButton(null), 300);
     
