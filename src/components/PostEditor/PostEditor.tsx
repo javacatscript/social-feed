@@ -4,7 +4,7 @@
 import { useState } from 'react';
 
 // MUI
-import { Box, IconButton, Button, styled } from '@mui/material';
+import { Box, IconButton, Button, styled, keyframes } from '@mui/material';
 
 // Icons
 import {
@@ -29,6 +29,28 @@ interface PostEditorProps {
   onAuthRequired: () => void;
   isAuthenticated: boolean;
 }
+
+// keyframe animations
+const shake = keyframes`
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+`;
+
+const publishSuccess = keyframes`
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+`;
+
+const ripple = keyframes`
+  0% {
+    box-shadow: 0 0 0 0 rgba(94, 95, 225, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(94, 95, 225, 0);
+  }
+`;
 
 // Styled Components
 const EditorContainer = styled(Box)({
@@ -66,9 +88,13 @@ const ToolbarDivider = styled('span')({
 const ToolbarButton = styled(IconButton)({
   padding: '8px',
   color: '#666',
+  transition: 'all 0.2s ease',
   '&:hover': {
     backgroundColor: '#f5f5f5',
     color: '#000',
+  },
+  '&.animate-shake': {
+    animation: `${shake} 0.3s ease-in-out`,
   },
 });
 
@@ -77,8 +103,12 @@ const DeleteButton = styled(IconButton)({
   color: '#f44336',
   backgroundColor: '#ffebee',
   borderRadius: '8px',
+  transition: 'all 0.2s ease',
   '&:hover': {
     backgroundColor: '#ffcdd2',
+  },
+  '&.animate-shake': {
+    animation: `${shake} 0.3s ease-in-out`,
   },
 });
 
@@ -118,6 +148,7 @@ const PublishButton = styled(Button)({
   padding: '10px',
   borderRadius: '8px',
   boxShadow: 'none',
+  transition: 'all 0.2s ease',
   '&:hover': {
     backgroundColor: 'transparent',
     color: '#4a4bc7',
@@ -126,11 +157,59 @@ const PublishButton = styled(Button)({
   '&.Mui-disabled': {
     backgroundColor: 'transparent',
   },
+  '&.animate-publish': {
+    animation: `${publishSuccess} 0.4s ease-out, ${ripple} 0.6s ease-out`,
+  },
 });
 
 export default function PostEditor({ value, onChange, onPublish, onAuthRequired, isAuthenticated }: PostEditorProps) {
-  const handleNotImplemented = () => {
-    alert('Function not implemented');
+  const [shakingButton, setShakingButton] = useState<string | null>(null);
+  const [isPublishing, setIsPublishing] = useState(false);
+
+  const handleNotImplemented = (buttonId: string) => {
+    setShakingButton(buttonId);
+    setTimeout(() => setShakingButton(null), 300);
+    
+    // show a  notification instead of alert
+    const notification = document.createElement('div');
+    notification.textContent = '✨ Coming soon!';
+    notification.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: #5E5FE1;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 10000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      animation: slideIn 0.3s ease-out;
+    `;
+    
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(-100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(-100%); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.animation = 'slideOut 0.3s ease-out';
+      setTimeout(() => {
+        document.body.removeChild(notification);
+        document.head.removeChild(style);
+      }, 300);
+    }, 2000);
   };
 
   const handlePublish = () => {
@@ -139,8 +218,12 @@ export default function PostEditor({ value, onChange, onPublish, onAuthRequired,
       return;
     }
     if (value.trim()) {
-      onPublish(value);
-      onChange('');
+      setIsPublishing(true);
+      setTimeout(() => {
+        onPublish(value);
+        onChange('');
+        setIsPublishing(false);
+      }, 400);
     }
   };
 
@@ -148,31 +231,63 @@ export default function PostEditor({ value, onChange, onPublish, onAuthRequired,
     <EditorContainer>
       <ToolbarContainer>
         <ToolbarLeft>
-          <ToolbarButton size="small" onClick={handleNotImplemented}>
+          <ToolbarButton 
+            size="small" 
+            onClick={() => handleNotImplemented('bold')}
+            className={shakingButton === 'bold' ? 'animate-shake' : ''}
+          >
             <FormatBold fontSize="small" />
           </ToolbarButton>
-          <ToolbarButton size="small" onClick={handleNotImplemented}>
+          <ToolbarButton 
+            size="small" 
+            onClick={() => handleNotImplemented('italic')}
+            className={shakingButton === 'italic' ? 'animate-shake' : ''}
+          >
             <FormatItalic fontSize="small" />
           </ToolbarButton>
-          <ToolbarButton size="small" onClick={handleNotImplemented}>
+          <ToolbarButton 
+            size="small" 
+            onClick={() => handleNotImplemented('underline')}
+            className={shakingButton === 'underline' ? 'animate-shake' : ''}
+          >
             <FormatUnderlined fontSize="small" />
           </ToolbarButton>
             <ToolbarDivider aria-hidden="true" />
-          <ToolbarButton size="small" onClick={handleNotImplemented}>
+          <ToolbarButton 
+            size="small" 
+            onClick={() => handleNotImplemented('bullet')}
+            className={shakingButton === 'bullet' ? 'animate-shake' : ''}
+          >
             <FormatListBulleted fontSize="small" />
           </ToolbarButton>
-          <ToolbarButton size="small" onClick={handleNotImplemented}>
+          <ToolbarButton 
+            size="small" 
+            onClick={() => handleNotImplemented('numbered')}
+            className={shakingButton === 'numbered' ? 'animate-shake' : ''}
+          >
             <FormatListNumbered fontSize="small" />
           </ToolbarButton>
             <ToolbarDivider aria-hidden="true" />
-          <ToolbarButton size="small" onClick={handleNotImplemented}>
+          <ToolbarButton 
+            size="small" 
+            onClick={() => handleNotImplemented('code')}
+            className={shakingButton === 'code' ? 'animate-shake' : ''}
+          >
             <Code fontSize="small" />
           </ToolbarButton>
-          <ToolbarButton size="small" onClick={handleNotImplemented}>
+          <ToolbarButton 
+            size="small" 
+            onClick={() => handleNotImplemented('quote')}
+            className={shakingButton === 'quote' ? 'animate-shake' : ''}
+          >
             <FormatQuote fontSize="small" />
           </ToolbarButton>
         </ToolbarLeft>
-        <DeleteButton size="small" onClick={handleNotImplemented}>
+        <DeleteButton 
+          size="small" 
+          onClick={() => handleNotImplemented('delete')}
+          className={shakingButton === 'delete' ? 'animate-shake' : ''}
+        >
           <Delete fontSize="small" />
         </DeleteButton>
       </ToolbarContainer>
@@ -188,13 +303,25 @@ export default function PostEditor({ value, onChange, onPublish, onAuthRequired,
 
       <EditorFooter>
         <FooterActions>
-          <ToolbarButton size="small" onClick={handleNotImplemented}>
+          <ToolbarButton 
+            size="small" 
+            onClick={() => handleNotImplemented('attach')}
+            className={shakingButton === 'attach' ? 'animate-shake' : ''}
+          >
             <AttachFile fontSize="small" />
           </ToolbarButton>
-          <ToolbarButton size="small" onClick={handleNotImplemented}>
+          <ToolbarButton 
+            size="small" 
+            onClick={() => handleNotImplemented('image')}
+            className={shakingButton === 'image' ? 'animate-shake' : ''}
+          >
             <ImageIcon fontSize="small" />
           </ToolbarButton>
-          <ToolbarButton size="small" onClick={handleNotImplemented}>
+          <ToolbarButton 
+            size="small" 
+            onClick={() => handleNotImplemented('emoji')}
+            className={shakingButton === 'emoji' ? 'animate-shake' : ''}
+          >
             <SentimentSatisfiedAlt fontSize="small" />
           </ToolbarButton>
         </FooterActions>
@@ -202,6 +329,7 @@ export default function PostEditor({ value, onChange, onPublish, onAuthRequired,
           variant="contained"
           onClick={handlePublish}
           disabled={!value.trim()}
+          className={isPublishing ? 'animate-publish' : ''}
         >
           <Send />
         </PublishButton>

@@ -1,7 +1,10 @@
 'use client';
 
+// React
+import { useState } from 'react';
+
 // MUI
-import { Box, Avatar, Typography, IconButton, styled } from '@mui/material';
+import { Box, Avatar, Typography, IconButton, styled, keyframes } from '@mui/material';
 
 // Icons
 import { FavoriteBorder, ChatBubbleOutline, Send } from '@mui/icons-material';
@@ -20,6 +23,18 @@ interface PostCardProps {
   onInteraction: () => void;
   isAuthenticated: boolean;
 }
+
+// Keyframe Animations
+const shake = keyframes`
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+`;
+
+const heartBeat = keyframes`
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+`;
 
 // Styled Components
 const CardContainer = styled(Box)({
@@ -90,18 +105,76 @@ const PostActions = styled(Box)({
 const ActionButton = styled(IconButton)({
   padding: '8px',
   color: '#666',
+  transition: 'all 0.2s ease',
   '&:hover': {
     backgroundColor: '#f5f5f5',
     color: '#5E5FE1',
   },
+  '&.animate-shake': {
+    animation: `${shake} 0.3s ease-in-out`,
+  },
+  '&.animate-heartbeat': {
+    animation: `${heartBeat} 0.5s ease-in-out`,
+  },
 });
 
 export default function PostCard({ post, onInteraction, isAuthenticated }: PostCardProps) {
-  const handleAction = () => {
+  const [animatingButton, setAnimatingButton] = useState<string | null>(null);
+
+  const handleAction = (buttonId: string) => {
     if (!isAuthenticated) {
       onInteraction();
     } else {
-      alert('Function not implemented');
+      // determine animation based on button type
+      const animationType = buttonId === 'like' ? 'animate-heartbeat' : 'animate-shake';
+      setAnimatingButton(`${buttonId}-${animationType}`);
+      setTimeout(() => setAnimatingButton(null), animationType === 'animate-heartbeat' ? 500 : 300);
+      
+      // show a notification instead of alert
+      const notification = document.createElement('div');
+      const messages = {
+        like: '❤️ Like feature coming soon!',
+        comment: '💬 Comment feature coming soon!',
+        share: '📤 Share feature coming soon!',
+      };
+      notification.textContent = messages[buttonId as keyof typeof messages] || '✨ Coming soon!';
+      notification.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: #5E5FE1;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        z-index: 10000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease-out;
+      `;
+      
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes slideIn {
+          from { transform: translateX(-100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+          from { transform: translateX(0); opacity: 1; }
+          to { transform: translateX(-100%); opacity: 0; }
+        }
+      `;
+      document.head.appendChild(style);
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+          document.head.removeChild(style);
+        }, 300);
+      }, 2000);
     }
   };
 
@@ -121,13 +194,25 @@ export default function PostCard({ post, onInteraction, isAuthenticated }: PostC
       </PostContent>
 
       <PostActions>
-        <ActionButton size="small" onClick={handleAction}>
+        <ActionButton 
+          size="small" 
+          onClick={() => handleAction('like')}
+          className={animatingButton === 'like-animate-heartbeat' ? 'animate-heartbeat' : ''}
+        >
           <FavoriteBorder fontSize="small" />
         </ActionButton>
-        <ActionButton size="small" onClick={handleAction}>
+        <ActionButton 
+          size="small" 
+          onClick={() => handleAction('comment')}
+          className={animatingButton === 'comment-animate-shake' ? 'animate-shake' : ''}
+        >
           <ChatBubbleOutline fontSize="small" />
         </ActionButton>
-        <ActionButton size="small" onClick={handleAction}>
+        <ActionButton 
+          size="small" 
+          onClick={() => handleAction('share')}
+          className={animatingButton === 'share-animate-shake' ? 'animate-shake' : ''}
+        >
           <Send fontSize="small" />
         </ActionButton>
       </PostActions>
