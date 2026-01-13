@@ -22,14 +22,20 @@ const BackdropOverlay = styled(Box)({
 });
 
 const ModalContainer = styled(Box)({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '90%',
+  position: 'fixed',
+  inset: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '24px',
+  outline: 'none',
+});
+
+// keep perspective on a non-transformed wrapper to avoid blurry text
+const PerspectiveContainer = styled(Box)({
+  width: '100%',
   maxWidth: 420,
   perspective: '1000px',
-  outline: 'none',
 });
 
 interface CardInnerProps {
@@ -94,22 +100,24 @@ export default function AuthModal({ open, onClose, onAuthenticate }: AuthModalPr
   return (
     <Modal open={open} onClose={onClose} BackdropComponent={BackdropOverlay}>
       <ModalContainer>
-        <CardInner $isFlipped={isFlipped}>
-          <CardFront>
-            {mode === 'login' ? (
-              <LoginForm onSubmit={handleAuth} onToggleMode={handleToggleMode} onClose={onClose} />
-            ) : (
-              <SignUpForm onSubmit={handleAuth} onToggleMode={handleToggleMode} onClose={onClose} />
-            )}
-          </CardFront>
-          <CardBack>
-            {mode === 'signup' ? (
-              <SignUpForm onSubmit={handleAuth} onToggleMode={handleToggleMode} onClose={onClose} />
-            ) : (
-              <LoginForm onSubmit={handleAuth} onToggleMode={handleToggleMode} onClose={onClose} />
-            )}
-          </CardBack>
-        </CardInner>
+        <PerspectiveContainer>
+          <CardInner $isFlipped={isFlipped}>
+            <CardFront>
+              {mode === 'login' ? (
+                <LoginForm onSubmit={handleAuth} onToggleMode={handleToggleMode} onClose={onClose} />
+              ) : (
+                <SignUpForm onSubmit={handleAuth} onToggleMode={handleToggleMode} onClose={onClose} />
+              )}
+            </CardFront>
+            <CardBack>
+              {mode === 'signup' ? (
+                <SignUpForm onSubmit={handleAuth} onToggleMode={handleToggleMode} onClose={onClose} />
+              ) : (
+                <LoginForm onSubmit={handleAuth} onToggleMode={handleToggleMode} onClose={onClose} />
+              )}
+            </CardBack>
+          </CardInner>
+        </PerspectiveContainer>
       </ModalContainer>
     </Modal>
   );
